@@ -188,7 +188,7 @@ def rule18(df,main): # kinship data will be used
             index_year_dic[df['c_personid'][i]] = (index_year_dic[df['c_kin_id'][i]]-24)
 
 def rule19(df): # kinship data will be used
-# Rule 19: index year = grandfather's birth year + 60
+# Rule 19: index year = grandfather's index year + 60
   for i in df.index:
     if index_year_dic[df['c_personid'][i]] == 0: # check whether the index year has been already calculated
       if df['c_kin_code'][i] == 62: # grandfather
