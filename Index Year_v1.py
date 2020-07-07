@@ -95,9 +95,9 @@ def rule9(df,main): # kinship data will be used
       child = get_oldest_child(df,main['c_personid'][i])[0]
       if child != 0: # check whether oldest child's birth year is known
         if main['c_female'] == False: # male
-          index_year_dic[df['c_personid'][i]] = (child-30)
+          index_year_dic[main['c_personid'][i]] = (child-30)
         elif main['c_female'] == True: # female
-          index_year_dic[df['c_personid'][i]] = (child-27)
+          index_year_dic[main['c_personid'][i]] = (child-27)
 
 def rule10(df): # kinship data will be used
 # Rule 10: index year = elder brother's birth year + 2
@@ -154,9 +154,9 @@ def rule15(df,main): # kinship data will be used
       child = index_year_dic[child_id]
       if child != 0: # check whether oldest child's index year has been already calculated
         if main['c_female'] == False: # male
-          index_year_dic[df['c_personid'][i]] = (child-30)
+          index_year_dic[main['c_personid'][i]] = (child-30)
         elif main['c_female'] == True: # female
-          index_year_dic[df['c_personid'][i]] = (child-27)
+          index_year_dic[main['c_personid'][i]] = (child-27)
 
 def rule16(df): # kinship data will be used
 # Rule 16: index year = elder brother's index year + 2
