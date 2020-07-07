@@ -170,7 +170,7 @@ def rule17(df): # kinship data will be used
 # Rule 17: index year = younger brother's index year - 2
   for i in df.index:
     if index_year_dic[df['c_personid'][i]] == 0: # check whether the index year has been already calculated
-      if df['c_kin_code'][i] == 1256: # younger brother
+      if df['c_kin_code'][i] == 126: # younger brother
         if df['c_kin_id'][i] in index_year_dic: # check whether younger brother's index year has been already calculated
           index_year_dic[df['c_personid'][i]] = (index_year_dic[df['c_kin_id'][i]]-2)
 
