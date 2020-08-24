@@ -10,46 +10,49 @@ main = pd.read_csv('BIOG_MAIN_BirthDeathYears_20200528_for index years cal.csv')
 degree = pd.read_csv('ENTRY YEARS_20200528_for index years cal.csv') # degree data
 kinship = pd.read_csv('KIN DATA_20200528_for index years cal.csv') # kinship data
 
-def index_year_dic(df):
+def index_year_dic(df): # main data will be used
   dic = {} # create an empty dictionary
   for i in df.index: # load all person id into the dic
     dic[df['c_personid'][i]] = -9999 # set initial value index year = -9999 for all
-  return dic
+  return 
+  
+def personid_list(index_year_dic):
+  return index_year_list.keys()
 
-def gender_dic(df):
+def gender_dic(df): # main data will be used
   dic = {} # create an empty dictionary
   for i in df.index: # load all person id into the dic
-    if df['c_female'][i] == True: # for female
+    if df['c_female'][i] == True: # female
       dic[df['c_personid'][i]] = 'female'
-    elif df['c_female'][i] == False: # for male
+    elif df['c_female'][i] == False: # male
       dic[df['c_personid'][i]] = 'male'
   return dic
 
-def birthyear_dic(df):
+def birthyear_dic(df): # main data will be used
   dic = {} # create an empty dictionary
   for i in df.index: # load all person id into the dic
     if pd.isna(df['c_birthyear'][i]) != True and df['c_birthyear'][i] != 0: # check whether the birth year is known
       dic[df['c_personid'][i]] = int(df['c_birthyear'][i]) # load birth year into the dic
     else:
-      dic[df['c_personid'][i]] = -9999 # set birth year = -9999 for those whose birth year are unknown
+      dic[df['c_personid'][i]] = -9999 # set birth year = -9999 for those who birth year are unknown
   return dic
 
-def deathyear_dic(df):
+def deathyear_dic(df): # main data will be used
   dic = {} # create an empty dictionary
   for i in df.index: # load all person id into the dic
     if pd.isna(df['c_deathyear'][i]) != True and df['c_deathyear'][i] != 0: # check whether the death year is known
       dic[df['c_personid'][i]] = int(df['c_deathyear'][i]) # load death year into the dic
     else:
-      dic[df['c_personid'][i]] = -9999 # set death year = -9999 for those whose death year are unknown
+      dic[df['c_personid'][i]] = -9999 # set death year = -9999 for those who death year are unknown
   return dic
 
-def death_age_dic(df):
+def death_age_dic(df): # main data will be used
   dic = {} # create an empty dictionary
   for i in df.index: # load all person id into the dic
     if pd.isna(df['c_death_age'][i]) != True and df['c_death_age'][i] != 0: # check whether the death age is known
       dic[df['c_personid'][i]] = int(df['c_death_age'][i]) # load death age into the dic
     else:
-      dic[df['c_personid'][i]] = -9999 # set death age = -9999 for those whose death age are unknown
+      dic[df['c_personid'][i]] = -9999 # set death age = -9999 for those who death age are unknown
   return dic
 
 def rule1and2(personid_list):
@@ -197,7 +200,8 @@ gender_dic = gender_dic(main)
 birthyear_dic = birthyear_dic(main)
 deathyear_dic = deathyear_dic(main)
 death_age_dic = death_age_dic(main)
-rule1and2(main)
+personid_list = personid_list(index_year_dic)
+rule1and2(personid_list)
 rule_degree(degree)
 rule4(kinship)
 rule8(kinship)
