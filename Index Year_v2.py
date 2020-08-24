@@ -72,13 +72,14 @@ def children_dic(df): # kinship data will be used
 def get_oldest_child(children_dic,personid):
   oldest_birth_year = 9999
   oldest_index_year = 9999
-  for i in children_dic[personid]:
-    if birthyear_dic[i] != -9999:
-      if birthyear_dic[i] < oldest_birth_year:
-        oldest_birth_year = birthyear_dic[i] 
-    if birthyear_dic[i] == -9999 and index_year_dic[i] != -9999:
-      if index_year_dic[i] < oldest_index_year:
-        oldest_index_year = index_year_dic[i]
+  if personid in children_dic:
+    for i in children_dic[personid]:
+      if birthyear_dic[i] != -9999:
+        if birthyear_dic[i] < oldest_birth_year:
+          oldest_birth_year = birthyear_dic[i] 
+      if birthyear_dic[i] == -9999 and index_year_dic[i] != -9999:
+        if index_year_dic[i] < oldest_index_year:
+          oldest_index_year = index_year_dic[i]
   return oldest_birth_year,oldest_index_year    
 
 def rule1and2(personid_list):
