@@ -55,6 +55,32 @@ def death_age_dic(df): # main data will be used
       dic[df['c_personid'][i]] = -9999 # set death age = -9999 for those who death age are unknown
   return dic
 
+def children_dic(df): # kinship data will be used
+  dic = {} # create an empty dictionary
+  for i in df.index:
+    list = []
+    exist = True
+    while exist = True:
+      if df['c_kin_code'][i] == 182 or df['c_kin_code'][i] == 193 or df['c_kin_code'][i] == 327 or df['c_kin_code'][i] == 343 or df['c_kin_code'][i] == 176 or df['c_kin_code'][i] == 180:
+        list.append(df['c_kin_id'][i])
+      else:
+        exist = False
+    if len(list) > 0:
+      dic[df['c_personid'][i]] = list
+  return dic
+    
+def get_oldest_child(children_dic,personid):
+  oldest_birth_year = 9999
+  oldest_index_year = 9999
+  for i in children_dic[personid]:
+    if birthyear_dic[i] != -9999:
+      if birthyear_dic[i] < oldest_birth_year:
+        oldest_birth_year = birthyear_dic[i] 
+    if birthyear_dic[i] == -9999 and index_year_dic[i] != -9999:
+      if index_year_dic[i] < oldest_index_year:
+        oldest_index_year = index_year_dic[i]
+  return oldest_birth_year,oldest_index_year    
+
 def rule1and2(personid_list):
 # Rule 1: index year = birth year
 # Rule 2: index year = death year - death age
@@ -97,7 +123,18 @@ def rule8(df): # kinship data will be used
         if df['c_kin_id'][i] in birthyear_dic: # check whether father's birth year is known
           index_year_dic[df['c_personid'][i]] = (birthyear_dic[df['c_kin_id'][i]]+30)
 
-# Rule 9
+def rule9(df,children_dic): # kinship data will be used
+# Rule 9:
+  # for male: index year = oldest child's birth year - 30 
+  # for female: index year = oldest child's birth year - 27
+  for i in df.index:
+    if index_year_dic[df['c_personid'][i]] == 0: # check whether the index year has been already calculated
+      child_birthyear = get_oldest_child(children_dic,df['c_personid'][i])[0]
+      if child_birthyear != 9999: # check whether oldest child's birth year is known
+        if gender_dic[df['c_personid'][i]] = 'male' # male
+          index_year_dic[df['c_personid'][i]] = (child_birthyear-30)
+        elif gender_dic[df['c_personid'][i]] = 'female': # female
+          index_year_dic[df['c_personid'][i]] = (child_birthyear-27)
 
 def rule10(df): # kinship data will be used
 # Rule 10: index year = elder brother's birth year + 2
@@ -144,7 +181,18 @@ def rule14(df): # kinship data will be used
         if df['c_kin_id'][i] in index_year_dic: # check whether father's index year has been already calculated
           index_year_dic[df['c_personid'][i]] = (index_year_dic[df['c_kin_id'][i]]+30)
 
-# Rule 15
+def rule15(df,children_dic): # kinship data will be used
+# Rule 15:
+  # for male: index year = oldest child's index year - 30
+  # for female: index year = oldest child's index year - 27
+  for i in df.index:
+    if index_year_dic[df['c_personid'][i]] == 0: # check whether the index year has been already calculated
+      child_index_year = get_oldest_child(children_dic,df['c_personid'][i])[1]
+      if child_index_year != 9999: # check whether oldest child's birth year is known
+        if gender_dic[df['c_personid'][i]] = 'male' # male
+          index_year_dic[df['c_personid'][i]] = (child_index_year-30)
+        elif gender_dic[df['c_personid'][i]] = 'female': # female
+          index_year_dic[df['c_personid'][i]] = (child_index_year-27)
 
 def rule16(df): # kinship data will be used
 # Rule 16: index year = elder brother's index year + 2
@@ -183,17 +231,17 @@ def rule19(df): # kinship data will be used
         if df['c_kin_id'][i] in index_year_dic: # check whether grandfather's index year has been already calculated
           index_year_dic[df['c_personid'][i]] = (index_year_dic[df['c_kin_id'][i]]+60)
 
-def rule20(df): # main data will be used
+def rule20(personid_list):
 # Rule 20:
   # for male: index year = death year - 63
   # for female: index year = death year - 55
-  for i in df.index:
-    if index_year_dic[df['c_personid'][i]] == 0: # check whether the index year has been already calculated
-      if deathyear_dic[df['c_personid'][i]] != -9999: # check whether the death year is known
-        if gender_dic[df['c_personid'][i]] == 'male': # male
-          index_year_dic[df['c_personid'][i]] = int(df['c_deathyear'][i]-63)
-        elif gender_dic[df['c_personid'][i]] == 'female': # female
-          index_year_dic[df['c_personid'][i]] = int(df['c_deathyear'][i]-55)
+  for i in personid_list:
+    if index_year_dic[i] == 0: # check whether the index year has been already calculated
+      if deathyear_dic[i] != -9999: # check whether the death year is known
+        if gender_dic[i] == 'male': # male
+          index_year_dic[i] = int(deathyear_dic[i]-63)
+        elif gender_dic[i] == 'female': # female
+          index_year_dic[i] = int(deathyear_dic[i]-55)
 
 index_year_dic = index_year_dic(main)
 gender_dic = gender_dic(main)
@@ -201,21 +249,22 @@ birthyear_dic = birthyear_dic(main)
 deathyear_dic = deathyear_dic(main)
 death_age_dic = death_age_dic(main)
 personid_list = personid_list(index_year_dic)
+children_dic = children_dic(kinship)
 rule1and2(personid_list)
 rule_degree(degree)
 rule4(kinship)
 rule8(kinship)
-#rule9
+rule9(kinship,children_dic)
 rule10(kinship)
 rule11(kinship)
 rule12(kinship)
 rule13(kinship)
 rule14(kinship)
-#rule15
+rule15(kinship,children_dic)
 rule16(kinship)
 rule17(kinship)
 rule18(kinship)
 rule19(kinship)
-rule20(main)
+rule20(personid_list)
 df = DataFrame(list(index_year_dic.items()),columns=['c_personid','c_index_year'])
 df.to_csv('output.csv',index=False)
