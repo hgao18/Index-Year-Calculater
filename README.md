@@ -16,9 +16,9 @@ pandas
 
 Run Index Year Program.ipynb first, then you will get the output:
 
-output.csv - the result for the index year calculation.
+**output.csv** - the result for the index year calculation.
 
-error report.csv - potential problematic data. For example, father's index year - son's index year >=100.
+**error report.csv** - potential problematic data. For example, father's index year - son's index year >=100.
 
 
 # Creator
