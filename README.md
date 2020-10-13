@@ -14,7 +14,7 @@ pandas
 
 # Getting Started:
 
-To run Index Year Program.ipynb, then you will get the output:
+Run Index Year Program.ipynb first, then you will get the output:
 
 output.csv - the result for the index year calculation.
 
