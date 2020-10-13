@@ -4,7 +4,7 @@ The index year generator for China Biographical Database project
 
 # Description
 
-We regard the birth year or calculated birth year as the index year for a historical figure. You can find the detail rules in Index-Year-Calculater/Misc/*
+We regard the birth year or calculated birth year as the index year for a historical figure. You can find the detail rules in Misc/*
 
 # Requirements
 
